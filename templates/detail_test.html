@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/403357b174.js" crossorigin="anonymous"></script>
+
+    <title>같이 먹자</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
+
+    <!-- to.지수님 
+    main.html에서 query string(url뒷쪽 "?id=숫자" 부분)을 이용해서 넘겨받은 id(post_id) 값을 다시 스크립트로 가져와서 GET 방식으로 해당 post_id의 post 데이터를 db에 request하여 받아오는 방식입니다!
+    (좋은 방식인지는 모르겠지만, 일단 working합니다...하하하 / 혹시 더 좋은 방식을 아신다면, 공유부탁드려요...) -->
+    <script>
+        $(document).ready(function () {
+            show();
+        });
+
+        const query = location.search;
+        const post_id = Number(query.split('=')[1]);
+
+        function show() {
+            $.ajax({
+                type: "GET",
+                url: `/detail_test/id=${post_id}`,
+                data: {},
+                success: function (response) {
+                    console.log(response)
+                },
+            });
+        }
+
+    </script>
+</head>
+
+
+
+<body>
+    <h1>라우팅 성고오오오오옹!!!</h1>
+</body>
+
+</html>
