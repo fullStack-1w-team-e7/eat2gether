@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/403357b174.js" crossorigin="anonymous"></script>
+
+    <title>같이 먹자</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            font-family: "Gowun Dodum", sans-serif;
+        }
+
+        .mytitle {
+            width: 100%;
+            height: 250px;
+
+            background-color: #F3ECE4;
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0)),
+                url("");
+            background-position: center;
+            background-size: cover;
+
+            color: black;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mytitle>h1 {
+            background-color: #F3ECE4;
+        }
+
+        .posting-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .posting-btn>button {
+            width: 300px;
+            height: 50px;
+
+            background-color: transparent;
+            color: black;
+
+            border-radius: 50px;
+            border: 1px solid black;
+            margin-top: 30px;
+        }
+
+        .posting-btn>button:hover {
+            border: 2px solid black;
+        }
+
+        .mycards {
+            margin: 30px auto 30px auto;
+            width: 95%;
+            max-width: 1200px;
+        }
+
+        .card {
+            border-radius: 5px;
+            border: 1.5px solid lightgray;
+            padding: 0px 5px;
+        }
+
+        .title-box {
+            margin: 10px 5px 10px 5px;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        .join-btn {
+            background-color: transparent;
+            color: black;
+
+            border-radius: 50px;
+            border: 1px solid lightgray;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            listing();
+            hideMaxCountDriect();
+        });
+
+        //모달에서 인원수 선택할 때 '직접입력 입력칸 숨기기'
+        function hideMaxCountDriect() {
+            $('#maxcountDirect').hide();
+
+            $('#maxcount').change(function () {
+                if ($('#maxcout').val() == "direct") {
+                    $('#maxcountDirect').show();
+                } else {
+                    $('#maxcountDirect').hide();
+                }
+            });
+        }
+
+        function listing() {
+            // 포스팅 카드 리스팅
+            $.ajax({
+                type: "GET",
+                url: "api/postings",
+                data: {},
+                success: function (response) {
+                    let rows = response["postings"]
+                    console.log(rows)
+                    for (let i = 0; i < rows.length; i++) {
+                        let post_id = Number(rows[i]["post_id"]);
+                        let restaurant = rows[i]["restaurant"];
+                        let address = rows[i]["address"];
+                        let url = rows[i]["url"];
+                        let img = rows[i]["img"];
+                        let message = rows[i]["message"];
+                        let date = rows[i]["date"];
+                        let time = rows[i]["time"];
+                        let meetingPlace = rows[i]["meetingPlace"];
+                        let payment = rows[i]["payment"];
+                        let maxCount = rows[i]["maxCount"];
+                        let count = rows[i]["count"];
+                        console.log(count);
+                        let temp_html = `
+                        <a herf="detail_test/${post_id}">   
+                            <div class="col" alt="${post_id}">
+                                <div class="card h-100">
+                                    <img alt="${post_id}" src="${img}" />
+                                    <div alt="${post_id}" class="title-box">
+                                        <h5 alt="${post_id}" class="card-title">식당명 : ${restaurant}</h5>
+                                        <button class='join-btn' onclick='addCount(${post_id})' alt="${post_id}">같이 먹자</button>
+                                    </div>
+                                    <p>주소 : ${address}</p>
+                                    <div class='card-body'>
+                                        <p class="card-text">${message}</p>
+                                        <p> 날짜 : ${date}<br>
+                                            시간 : ${time}<br>
+                                            장소 : ${meetingPlace}<br>
+                                            결제방식 : ${payment}<br>
+                                            정원 : ${count.length}/${maxCount}명
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        `;
+
+                        $("#cards-box").append(temp_html);
+                    }
+                },
+            });
+
+            // 모달에 식당 리스트 붙여주기
+            $.ajax({
+                type: "GET",
+                url: "api/restaurant_list",
+                data: {},
+                success: function (response) {
+                    let rows = response["restaurants"]
+                    for (let i = 0; i < rows.length; i++) {
+                        let restaurant = rows[i]['restaurant']
+                        let temp_html_option_names = `
+                                <option value="${i}">${restaurant}</option>
+                        `;
+                        $('#restaurants').append(temp_html_option_names)
+                    }
+                },
+            });
+        }
+
+        // 포스팅 db에 추가
+        function posting() {
+            let restaurant = $("#restaurants option:checked").text();
+            let message = $("#contentText").val();
+            let date = $("#date").val();
+            date = date.split('-')
+            date.splice(1, 0, '년')
+            date.splice(3, 0, '월')
+            date.splice(5, 0, '일')
+            date = date.join("");
+            let time = $("#time").val();
+            let meetingPlace = $("#meetingPlace").val();
+            let payment = $("#payment option:checked").text();
+            let maxcount = $("#maxcount option:checked").val();
+            let user_id = 'user_writer'//포스팅 올린 유저 id 넣어주기
+
+            $.ajax({
+                type: "POST",
+                url: "api/postings",
+                data: { restaurant_give: restaurant, message_give: message, date_give: date, time_give: time, meetingPlace_give: meetingPlace, payment_give: payment, maxcount_give: maxcount, count_give: user_id },
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                },
+            });
+        }
+
+        function addCount(id) {
+            let user_id = 'uaser_add' //참여하기 누른 유저 id 가져오기;
+            $.ajax({
+                type: "POST",
+                url: "api/postings/add",
+                data: { post_id_give: id, count_give: user_id },
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                },
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="mytitle">
+        <h1>같이 먹자</h1>
+    </div>
+    <div class="main-body">
+        <!-- Button trigger modal -->
+        <div class='posting-btn'>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">같이 먹을 사람 구하기!</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            <i class="fa-solid fa-people-group"></i>
+                            같이 먹을 사람
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id='modal-body'>
+                        <select class="form-select" id="restaurants" aria-label="Floating label select example"
+                            onchange="cat_change()">
+                            <option selected>같이 먹을 식당 선택</option>
+                        </select>
+                        <div class="form-floating">
+                            <textarea class="form-control" id="contentText"></textarea>
+                            <label for="contentText">같이 이 식당에 가야 하는 이유를 입력해주세요.</label>
+                        </div>
+
+                        <div class="row g-2" id="catset">
+                            <div class="col-md">
+                                <p>같이 먹을 날짜와 시간을 선택하세요.</p>
+                                <input type='date' id='date'>
+                                <input type='time' id='time'>
+
+
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="meetingPlace"></textarea>
+                                    <label for="meetingPlace">접선 장소를 입력해 주세요.</label>
+                                </div>
+
+                                <div class="row g-2" id="catset">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="payment"
+                                                aria-label="Floating label select example" onchange="cat_change()">
+                                                <option selected>--결제 방식--</option>
+                                                <option value="1">내.돈.내.먹.</option>
+                                                <option value="2">무조건 n 빵</option>
+                                                <option value="3">오늘은 내가 쏜다!</option>
+                                                <option value="4">무전취식 - 발빠르신 분만</option>
+                                            </select>
+                                            <label for=payment>오늘의 물주는 누구?</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="maxcount"
+                                                aria-label="Floating label select example">
+                                                <option selected>--최대 인원수--</option>
+                                                <option value="1">1명</option>
+                                                <option value="2">2명</option>
+                                                <option value="3">3명</option>
+                                                <option value="4">4명</option>
+                                                <option value="direct">직접 입력</option>
+                                            </select>
+                                            <input type='number' id='maxcountDirect'>
+                                            <label for="maxcount">몇명까지 커버 가능?</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-warning" onclick='posting()'
+                                    data-bs-dismiss="modal">포스팅하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mycards">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-box">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
