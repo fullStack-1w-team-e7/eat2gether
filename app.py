@@ -96,16 +96,6 @@ def open_details():
     return render_template('detail_test.html')
 
 
-# for 지수님
-# detail page에서 post_id 값을 받아 db 검색 후 검색 결과 넘겨주기
-# GET method 사용할 때, data깂 전달 받을 수 있는지?
-@app.route("/detail_test/id=<id>", methods=["GET"])
-def post_id_get(id):
-    post_id = int(id)
-    post = db.postings.find_one(
-        {'post_id': post_id}, {'_id': False})
-    return jsonify({'post': post})
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
