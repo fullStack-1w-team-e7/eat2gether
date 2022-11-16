@@ -91,6 +91,31 @@ def add_count():
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
 
 
+#회원가입 DB로 저(장)   여기에도 연습합니다
+@app.route('/api/register', methods=["POST"])
+def info_post():
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
+
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+
+    doc = {
+        'id': id_receive,
+        'pw': pw_hash
+        }
+    db.info.insert_one(doc)
+
+    return jsonify({'msg': '가입 완료!'})
+
+
+@app.route("/api/register", methods=["GET"])
+def web_mars_get():
+    info_list = list(db.info.find({}, {'_id': False}))
+    return jsonify({'infos': info_list})
+
+
+
+
 @app.route('/detail_test')
 def open_details():
     return render_template('detail_test.html')
