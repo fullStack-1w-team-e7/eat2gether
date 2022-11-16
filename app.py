@@ -7,6 +7,8 @@ client = MongoClient(
 
 db = client.project7
 
+# main page
+
 
 @app.route('/')
 def home():
@@ -77,18 +79,16 @@ def add_count():
 
     # db에서 count 배열을 가져와 현재 참여하기를 누른 유저의 id 값이 있는지 확인 후, 없으면 배열에 추가하고, 있으면 "이미 참여하셨습니다." 메세지 전송
 
-    if len(participants) < maxCount:
-        for participant in participants:
-            if user_receive != participant:
-                db.postings.update_one({'post_id': post_id_receive}, {
-                    '$push': {'count': user_receive}})
-                print(db.postings.find_one(
-                    {'post_id': post_id_receive}, {'_id': False})['count'])
-                return jsonify({'msg': '참가 완료!'})
-            else:
-                return jsonify({'msg': '이미 같이 먹기로 하였습니다!'})
-    else:
+    if len(participants) >= maxCount:
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
+    elif len(participants) < maxCount and user_receive not in participants:
+        db.postings.update_one({'post_id': post_id_receive}, {
+            '$push': {'count': user_receive}})
+        print(db.postings.find_one(
+            {'post_id': post_id_receive}, {'_id': False})['count'])
+        return jsonify({'msg': '참가 완료!'})
+    else:
+        return jsonify({'msg': '이미 같이 먹기로 하였습니다!'})
 
 
 # 상세 페이지 이동 관련
@@ -112,7 +112,8 @@ def counting(post_id, member):
     # 없다면 배열에 member 추가 후 db업데이트
     if len(participant_list) < maxCount:
         participant_list.append(member)
-        db.postings.update_one({'post_id': post_id}, {'$set': {'count': participant_list}})
+        db.postings.update_one({'post_id': post_id}, {
+                               '$set': {'count': participant_list}})
         print(page_info)
         return jsonify({'result': 'success', 'msg': '식사에 참여되었습니다.'})
 
@@ -148,7 +149,7 @@ def post_info(post_id):
     return render_template('detail.html', page=page_info)
 
 
-#회원가입 DB로 저(장)   여기에도 연습합니다
+# 회원가입 DB로 저(장)   여기에도 연습합니다
 @app.route('/api/register', methods=["POST"])
 def info_post():
     id_receive = request.form['id_give']
@@ -159,7 +160,7 @@ def info_post():
     doc = {
         'id': id_receive,
         'pw': pw_hash
-        }
+    }
     db.info.insert_one(doc)
 
     return jsonify({'msg': '가입 완료!'})
@@ -169,14 +170,6 @@ def info_post():
 def web_mars_get():
     info_list = list(db.info.find({}, {'_id': False}))
     return jsonify({'infos': info_list})
-
-
-
-
-@app.route('/detail_test')
-def open_details():
-    return render_template('detail_test.html')
-
 
 
 if __name__ == '__main__':
