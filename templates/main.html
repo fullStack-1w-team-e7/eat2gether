@@ -2,20 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/403357b174.js" crossorigin="anonymous"></script>
 
     <title>같이 먹자</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
 
     <style>
         * {
@@ -28,9 +28,9 @@
 
             background-color: #F3ECE4;
             background-image: linear-gradient(0deg,
-            rgba(0, 0, 0, 0),
-            rgba(0, 0, 0, 0)),
-            url("");
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0)),
+                url("");
             background-position: center;
             background-size: cover;
 
@@ -42,7 +42,7 @@
             justify-content: center;
         }
 
-        .mytitle > h1 {
+        .mytitle>h1 {
             background-color: #F3ECE4;
         }
 
@@ -53,7 +53,7 @@
             justify-content: center;
         }
 
-        .posting-btn > button {
+        .posting-btn>button {
             width: 300px;
             height: 50px;
 
@@ -65,7 +65,7 @@
             margin-top: 30px;
         }
 
-        .posting-btn > button:hover {
+        .posting-btn>button:hover {
             border: 2px solid black;
         }
 
@@ -104,20 +104,19 @@
     <script>
         $(document).ready(function () {
             listing();
-            hideMaxCountDriect();
+            getInputMaxCountDriect()
         });
 
         //모달에서 인원수 선택할 때 '직접입력 입력칸 숨기기'
-        function hideMaxCountDriect() {
-            $('#maxcountDirect').hide();
-
-            $('#maxcount').change(function () {
-                if ($('#maxcout').val() == "direct") {
-                    $('#maxcountDirect').show();
-                } else {
-                    $('#maxcountDirect').hide();
-                }
-            });
+        function getInputMaxCountDriect(value) {
+            console.log('테스트 함수 실행!');
+            if (value == "direct") {
+                let maxCount = prompt('같이 먹을 최대 인원을 숫자로 입력해주세요!', 'number')
+                maxCount = parseInt(maxCount);
+                console.log(maxCount, typeof maxCount);
+                $("#maxcount option:checked").val() = maxCount
+            }
+            return console.log($("#maxcount option:checked").val());
         }
 
         function listing() {
@@ -208,16 +207,7 @@
             $.ajax({
                 type: "POST",
                 url: "api/postings",
-                data: {
-                    restaurant_give: restaurant,
-                    message_give: message,
-                    date_give: date,
-                    time_give: time,
-                    meetingPlace_give: meetingPlace,
-                    payment_give: payment,
-                    maxcount_give: maxcount,
-                    count_give: user_id
-                },
+                data: { restaurant_give: restaurant, message_give: message, date_give: date, time_give: time, meetingPlace_give: meetingPlace, payment_give: payment, maxcount_give: maxcount, count_give: user_id },
                 success: function (response) {
                     alert(response["msg"]);
                     window.location.reload();
@@ -231,7 +221,7 @@
             $.ajax({
                 type: "POST",
                 url: "api/postings/add",
-                data: {post_id_give: id, count_give: user_id},
+                data: { post_id_give: id, count_give: user_id },
                 success: function (response) {
                     alert(response["msg"]);
                     window.location.reload();
@@ -239,106 +229,102 @@
             });
         }
 
-        /*
-            임시 수정 이후 오류해결하면 수정
-            location.href = `/detail_test?id=${id}`
-         */
         function routing(id) {
-            location.href = `/api/postings-detail/${id}`
+            location.href = `/detail_test?id=${id}`
         }
     </script>
 </head>
 
 <body>
-<div class="mytitle">
-    <h1>같이 먹자</h1>
-</div>
-<div class="main-body">
-    <!-- Button trigger modal -->
-    <div class='posting-btn'>
-        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">같이 먹을 사람 구하기!</button>
+    <div class="mytitle">
+        <h1>같이 먹자</h1>
     </div>
+    <div class="main-body">
+        <!-- Button trigger modal -->
+        <div class='posting-btn'>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">같이 먹을 사람 구하기!</button>
+        </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        <i class="fa-solid fa-people-group"></i>
-                        같이 먹을 사람
-                    </h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id='modal-body'>
-                    <select class="form-select" id="restaurants" aria-label="Floating label select example"
-                            onchange="cat_change()">
-                        <option selected>같이 먹을 식당 선택</option>
-                    </select>
-                    <div class="form-floating">
-                        <textarea class="form-control" id="contentText"></textarea>
-                        <label for="contentText">같이 이 식당에 가야 하는 이유를 입력해주세요.</label>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            <i class="fa-solid fa-people-group"></i>
+                            같이 먹을 사람
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
-                    <div class="row g-2" id="catset">
-                        <div class="col-md">
-                            <p>같이 먹을 날짜와 시간을 선택하세요.</p>
-                            <input type='date' id='date'>
-                            <input type='time' id='time'>
-
-
-                            <div class="form-floating">
-                                <textarea class="form-control" id="meetingPlace"></textarea>
-                                <label for="meetingPlace">접선 장소를 입력해 주세요.</label>
-                            </div>
-
-                            <div class="row g-2" id="catset">
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                        <select class="form-select" id="payment"
-                                                aria-label="Floating label select example" onchange="cat_change()">
-                                            <option selected>--결제 방식--</option>
-                                            <option value="1">내.돈.내.먹.</option>
-                                            <option value="2">무조건 n 빵</option>
-                                            <option value="3">오늘은 내가 쏜다!</option>
-                                            <option value="4">무전취식 - 발빠르신 분만</option>
-                                        </select>
-                                        <label for=payment>오늘의 물주는 누구?</label>
-                                    </div>
-                                </div>
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                        <select class="form-select" id="maxcount"
-                                                aria-label="Floating label select example">
-                                            <option selected>--최대 인원수--</option>
-                                            <option value="1">1명</option>
-                                            <option value="2">2명</option>
-                                            <option value="3">3명</option>
-                                            <option value="4">4명</option>
-                                            <option value="direct">직접 입력</option>
-                                        </select>
-                                        <input type='number' id='maxcountDirect'>
-                                        <label for="maxcount">몇명까지 커버 가능?</label>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="modal-body" id='modal-body'>
+                        <select class="form-select" id="restaurants" aria-label="Floating label select example"
+                            onchange="cat_change()">
+                            <option selected>같이 먹을 식당 선택</option>
+                        </select>
+                        <div class="form-floating">
+                            <textarea class="form-control" id="contentText"></textarea>
+                            <label for="contentText">같이 이 식당에 가야 하는 이유를 입력해주세요.</label>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                            <button type="button" class="btn btn-warning" onclick='posting()'
-                                    data-bs-dismiss="modal">포스팅하기
-                            </button>
+
+                        <div class="row g-2" id="catset">
+                            <div class="col-md">
+                                <p>같이 먹을 날짜와 시간을 선택하세요.</p>
+                                <input type='date' id='date'>
+                                <input type='time' id='time'>
+
+
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="meetingPlace"></textarea>
+                                    <label for="meetingPlace">접선 장소를 입력해 주세요.</label>
+                                </div>
+
+                                <div class="row g-2" id="catset">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="payment"
+                                                aria-label="Floating label select example" onchange="cat_change()">
+                                                <option selected>--결제 방식--</option>
+                                                <option value="1">내.돈.내.먹.</option>
+                                                <option value="2">무조건 n 빵</option>
+                                                <option value="3">오늘은 내가 쏜다!</option>
+                                                <option value="4">무전취식 - 발빠르신 분만</option>
+                                            </select>
+                                            <label for=payment>오늘의 물주는 누구?</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="maxcount"
+                                                onchange='getInputMaxCountDriect(value)'
+                                                aria-label="Floating label select example">
+                                                <option selected>--최대 인원수--</option>
+                                                <option value="1">1명</option>
+                                                <option value="2">2명</option>
+                                                <option value="3">3명</option>
+                                                <option value="4">4명</option>
+                                                <option value="direct">직접 입력</option>
+                                            </select>
+                                            <label for="maxcount">몇명까지 커버 가능?</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-warning" onclick='posting()'
+                                    data-bs-dismiss="modal">포스팅하기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mycards">
-        <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-box">
+
+        <div class="mycards">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-box">
+            </div>
         </div>
     </div>
-</div>
 
 </body>
 
