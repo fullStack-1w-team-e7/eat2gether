@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>상세 페이지</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .mytitle {
+            width: 100%;
+            height: 200px;
+
+            background-color: #F6EDE6;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-info {
+
+            background-color: #D9D9D9;
+
+            width: 50%;
+            height: 100%;
+
+            margin: 0 auto;
+        }
+
+
+        .detail-info__title {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-info__restaurant {
+
+            font-size: 40px;
+
+            padding-top: 50px;
+            padding-left: 30px;
+        }
+
+       .detail-info .detail-info__date {
+            margin-top: 50px;
+            margin-right: 30px;
+       }
+
+        .detail-info .img {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 30px;
+        }
+
+        .detail-info .img img {
+            width: 50%;
+            height: 300px;
+
+            object-fit: fill;
+
+        }
+
+        .detail-info .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 30px;
+        }
+
+        .detail-info .comment-list {
+            margin: 10px 10px 10px 10px;
+        }
+
+        .detail-info .comment {
+            padding: 20px;
+
+            margin-top: 10px;
+
+            border: 1px solid black;
+            border-radius: 15px;
+
+            background-color: white;
+        }
+
+    </style>
+
+    <script>
+        function add() {
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/add/{{ page.post_id }}/jisoo',
+                data: {},
+                success: function(response) {
+                    const result = response['result']
+
+                    if(result === 'success') {
+                        alert(response['msg'])
+                    } else if(result === 'fail') {
+                        alert(response['msg'])
+                    }
+
+                    window.location.href = '/api/postings/{{ page.post_id }}';
+
+                }
+            })
+        }
+
+        function deletePost() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/delete-post/{{ page.post_id }}/jisoo',
+                data: {},
+                success: function(response) {
+                    const result = response['result']
+
+                    if(result === 'success') {
+                        alert(response['msg']);
+                        window.location.href = '/'
+                    } else if(result === 'fail') {
+                        alert(response['msg']);
+                    }
+
+                }
+            })
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="mytitle">
+        <h1>같이먹자</h1>
+    </div>
+
+    <div class="detail-info">
+
+        <div class="detail-info__title">
+            <div class="detail-info__restaurant">{{ page.restaurant }}</div>
+
+            <div class="detail-info__date">
+                <div>
+                    모임 일시: {{ page.date }} {{ page.time  }}
+                </div>
+                <div>
+                    모집 장소: {{ page.meetingPlace }}
+                </div>
+                <div>
+                    모임장: {{ page.count[0] }}
+                </div>
+            </div>
+         </div>
+
+        <div class="img">
+            <img src="{{ page.img }}" alt="{{ page.restaurant }}">
+        </div>
+
+        <div class="content">
+            <div>식당주소 : {{ page.address }}</div>
+            <div>{{ page.message }}</div>
+        </div>
+
+        <div class="btn">
+            <button onclick="add()" type="button" class="btn btn-dark">참여하기({{ page.count | length }}/{{ page.maxCount }})</button>
+            <button onclick="deletePost()" type="button" class="btn btn-dark">게시물 삭제</button>
+        </div>
+
+        <div class="comment-list">
+            {% for participant in page.count %}
+                <div class="comment">
+                    {{ participant }}님이 참여하셨습니다!
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</body>
+</html>
