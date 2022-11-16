@@ -91,6 +91,63 @@ def add_count():
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
 
 
+# 상세 페이지 이동 관련
+
+# 상세 페이지에서 식사 원정대 참여
+# member - jisoo로 고정
+# 추후 로그인, 회원가입 기능 완료되면 파라미터 수정
+@app.post('/api/add/<int:post_id>/<member>')
+def counting(post_id, member):
+    page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
+
+    participant_list = page_info['count']
+    maxCount = int(page_info['maxCount'])
+
+    # 배열에 member가 있다면 return
+    for participant in participant_list:
+        if participant == member:
+            print(post_id, member)
+            return jsonify({'result': 'fail', 'msg': '이미 식사에 참여하셨습니다'})
+
+    # 없다면 배열에 member 추가 후 db업데이트
+    if len(participant_list) < maxCount:
+        participant_list.append(member)
+        db.postings.update_one({'post_id': post_id}, {'$set': {'count': participant_list}})
+        print(page_info)
+        return jsonify({'result': 'success', 'msg': '식사에 참여되었습니다.'})
+
+    # 모든 if문에 안걸리면 정원초과과
+    return jsonify({'result': 'fail', 'msg': '정원초과입니다.'})
+
+
+# 게시물 삭제
+# member - jisoo로 고정
+# 추후 로그인, 회원가입 기능 완료되면 파라미터 수정
+@app.post('/api/delete-post/<int:post_id>/<member>')
+def delete_post(post_id, member):
+
+    print('넘어오냐?')
+
+    page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
+
+    participant_list = page_info['count']
+
+    # 배열 0번째 인덱스 작성자와 member가 같다면 삭제, 아니면 삭제불가
+    if participant_list[0] == member:
+        db.postings.delete_one({'post_id': post_id})
+        return jsonify({'result': 'success', 'msg': '삭제에 성공하셨습니다'})
+    else:
+        return jsonify({'result': 'fail', 'msg': '삭제권한이 없습니다'})
+
+
+# 메인페이지에서 게시물 클릭 시 상세페이지로 이동
+@app.get('/api/postings-detail/<int:post_id>')
+def post_info(post_id):
+    page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
+    print(page_info)
+    return render_template('detail.html', page=page_info)
+
+
 #회원가입 DB로 저(장)   여기에도 연습합니다
 @app.route('/api/register', methods=["POST"])
 def info_post():
