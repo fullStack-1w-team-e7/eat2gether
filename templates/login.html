@@ -55,13 +55,19 @@
 
     </style>
     <script>
+        /* {% if %}
+               <li class="id"> {{ id }}님 안녕하세요!</li>
+
+            {% else %}
+                <li><a href="/login">로그인</a></li>
+                <li><a href="/login">회원가입</a></li>
+            {% endif %} */
+
         function login() {
             let id = $("#inputId").val()
             let pw = $("#inputPassword").val()
 
-         console.log(id, pw);}
-
-
+         print(id, pw);}
 
 
         $.ajax({

@@ -104,19 +104,20 @@
     <script>
         $(document).ready(function () {
             listing();
-            getInputMaxCountDriect()
         });
 
+        let inputCount = 0;
         //모달에서 인원수 선택할 때 '직접입력 입력칸 숨기기'
         function getInputMaxCountDriect(value) {
-            console.log('테스트 함수 실행!');
             if (value == "direct") {
-                let maxCount = prompt('같이 먹을 최대 인원을 숫자로 입력해주세요!', 'number')
-                maxCount = parseInt(maxCount);
-                console.log(maxCount, typeof maxCount);
-                $("#maxcount option:checked").val() = maxCount
+                let inputNum = prompt('같이 먹을 최대 인원을 숫자로 입력해주세요!', 'number')
+                inputCount = parseInt(inputNum).toString();
+                console.log(inputCount, typeof inputCount);
+                return inputCount
+            } else {
+                inputCount = 0;
+                return inputCount;
             }
-            return console.log($("#maxcount option:checked").val());
         }
 
         function listing() {
@@ -141,7 +142,6 @@
                         let payment = rows[i]["payment"];
                         let maxCount = rows[i]["maxCount"];
                         let count = rows[i]["count"];
-                        console.log(count);
                         let temp_html = `
                         <div class="col" alt="${post_id}">
                             <div class="card h-100">
@@ -200,7 +200,13 @@
             let time = $("#time").val();
             let meetingPlace = $("#meetingPlace").val();
             let payment = $("#payment option:checked").text();
-            let maxcount = $("#maxcount option:checked").val();
+            let maxcount;
+            if ($("#maxcount option:checked").val() == 'direct') {
+                maxcount = inputCount
+            } else {
+                maxcount = $("#maxcount option:checked").val();
+            }
+            console.log($("#maxcount option:checked").val(), maxcount);
             //로그인 기능 활성화 되면 쿠키를 이용해서 id 값 받아오기
             let user_id = 'user_writer'//포스팅 올린 유저 id 넣어주기
 
@@ -230,7 +236,7 @@
         }
 
         function routing(id) {
-            location.href = `/detail_test?id=${id}`
+            location.href = `/api/postings-detail/${id}`
         }
     </script>
 </head>
