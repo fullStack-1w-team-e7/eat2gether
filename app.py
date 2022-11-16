@@ -1,10 +1,13 @@
+import os
+from dotenv import dotenv_values
 from pymongo import MongoClient
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
-client = MongoClient(
-    'mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority')
+config = dotenv_values('.env')
+atlas_url = config['MONGODB_CLIENT']
 
+client = MongoClient(atlas_url)
 db = client.project7
 
 SECRET_KEY = 'SPARTA'
@@ -105,6 +108,8 @@ def add_count():
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
 
 
+# 회원가입 DB로 저장하는 부분
+
 # 상세 페이지 이동 관련
 
 # 상세 페이지에서 식사 원정대 참여
@@ -162,7 +167,12 @@ def post_info(post_id):
     return render_template('detail.html', page=page_info)
 
 
+
 #회원가입 DB로 저(장)   여기에도 연습합니다
+
+# 회원가입 DB로 저(장)   여기에도 연습합니다
+
+
 @app.route('/api/register', methods=["POST"])
 def info_post():
     id_receive = request.form['id_give']
@@ -184,6 +194,7 @@ def web_mars_get():
     info_list = list(db.info.find({}, {'_id': False}))
     return jsonify({'infos': info_list})
 
+
 @app.route("/api/login", methods=["POST"])
 def api_login():
     id_receive = request.form['id_give']
@@ -202,6 +213,9 @@ def api_login():
 @app.route('/detail_test')
 def open_details():
     return render_template('detail_test.html')
+
+
+# 여기까지
 
 
 
