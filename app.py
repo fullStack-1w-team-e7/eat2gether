@@ -1,12 +1,12 @@
-from pymongo import MongoClient
+
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
-client = MongoClient(
-    'mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority')
+from pymongo import MongoClient
+client = MongoClient('mongodb+srv://tibbetrabbit:galois1811@cluster0.5tpcr40.mongodb.net/?retryWrites=true&w=majority')
+db = client.dbsparta
 
-db = client.project7
-
+import hashlib
 
 @app.route('/')
 def home():
@@ -91,7 +91,7 @@ def add_count():
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
 
 
-#회원가입 DB로 저(장)   여기에도 연습합니다
+#회원가입 api
 @app.route('/api/register', methods=["POST"])
 def info_post():
     id_receive = request.form['id_give']
@@ -108,13 +108,11 @@ def info_post():
     return jsonify({'msg': '가입 완료!'})
 
 
-@app.route("/api/register", methods=["GET"])
-def web_mars_get():
-    info_list = list(db.info.find({}, {'_id': False}))
-    return jsonify({'infos': info_list})
 
-
-
+#회원가입 창 (커밋 잘되나)
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 @app.route('/detail_test')
 def open_details():
