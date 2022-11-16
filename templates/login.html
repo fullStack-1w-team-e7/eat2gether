@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>같이 먹자</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .mytitle {
+            background-color: wheat;
+
+            height: 200px;
+            width: 100%;
+
+            /*background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url("https://files.slack.com/files-pri/T01L2TNGW3T-F04ASR70NPM/____________________________________________.jpg");
+            background-position: center;
+            background-size: cover; */
+
+            color: black;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mypost {
+            width: 500px;
+
+            margin: 20px auto 0px auto;
+            box-shadow: 0px 0px 3px 0px gray;
+            padding: 20px;
+
+        }
+
+        .btn_box {
+            margin: 10px auto 10px auto;
+
+        }
+
+
+    </style>
+    <script>
+        function login() {
+            let id = $("#inputId").val()
+            let pw = $("#inputPassword").val()
+
+         console.log(id, pw);}
+
+
+
+
+        $.ajax({
+                type: "POST",
+                url: "/api/login",
+                data: {id_give: id, pw_give: pw},
+                success: function (response) {
+                    if (response["result"] === "success") {
+                        alert("로그인에 성공했습니다!");
+                        /* $.cookie("mytoken", response["token"], {path: "/"});
+                        window.location.href = "/"; */
+                    } else {
+                        alert(response["msg"]);
+                    }
+                },
+            });
+
+
+    </script>
+</head>
+
+<body>
+<div class="mytitle">
+    <h1>같이 먹자</h1>
+</div>
+<div class="mypost">
+    <div class="log_in_wrap">
+        <div class="wrap">
+            <input onclick="login()" type="text" class="form-control" id="inputId"/>
+        </div>
+        <div class="wrap">
+            <input onclick="login()" type="password" class="form-control" id="inputPassword"/>
+            <p class="text"></p>
+        </div>
+        <div class="btn_box">
+            <div class="d-grid gap-2">
+                <button onclick="login()" class="btn btn-outline-secondary" >로그인</button>
+            </div>
+            <hr>
+            <div> 아직 회원이 아니라면? </hr>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-secondary" type="button">회원 가입하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+</div>
+
+</div>
+</body>
+
+</html>
