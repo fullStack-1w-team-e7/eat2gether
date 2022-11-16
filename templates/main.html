@@ -104,20 +104,19 @@
     <script>
         $(document).ready(function () {
             listing();
-            hideMaxCountDriect();
+            getInputMaxCountDriect()
         });
 
         //모달에서 인원수 선택할 때 '직접입력 입력칸 숨기기'
-        function hideMaxCountDriect() {
-            $('#maxcountDirect').hide();
-
-            $('#maxcount').change(function () {
-                if ($('#maxcout').val() == "direct") {
-                    $('#maxcountDirect').show();
-                } else {
-                    $('#maxcountDirect').hide();
-                }
-            });
+        function getInputMaxCountDriect(value) {
+            console.log('테스트 함수 실행!');
+            if (value == "direct") {
+                let maxCount = prompt('같이 먹을 최대 인원을 숫자로 입력해주세요!', 'number')
+                maxCount = parseInt(maxCount);
+                console.log(maxCount, typeof maxCount);
+                $("#maxcount option:checked").val() = maxCount
+            }
+            return console.log($("#maxcount option:checked").val());
         }
 
         function listing() {
@@ -296,6 +295,7 @@
                                     <div class="col-md">
                                         <div class="form-floating">
                                             <select class="form-select" id="maxcount"
+                                                onchange='getInputMaxCountDriect(value)'
                                                 aria-label="Floating label select example">
                                                 <option selected>--최대 인원수--</option>
                                                 <option value="1">1명</option>
@@ -304,7 +304,6 @@
                                                 <option value="4">4명</option>
                                                 <option value="direct">직접 입력</option>
                                             </select>
-                                            <input type='number' id='maxcountDirect'>
                                             <label for="maxcount">몇명까지 커버 가능?</label>
                                         </div>
                                     </div>
@@ -320,6 +319,7 @@
                 </div>
             </div>
         </div>
+
         <div class="mycards">
             <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-box">
             </div>
