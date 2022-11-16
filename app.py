@@ -91,6 +91,9 @@ def add_count():
         return jsonify({'msg': '이미 같이 먹기로 하였습니다!'})
 
 
+
+#회원가입 DB로 저장하는 부분
+
 # 상세 페이지 이동 관련
 
 # 상세 페이지에서 식사 원정대 참여
@@ -150,6 +153,7 @@ def post_info(post_id):
 
 
 # 회원가입 DB로 저(장)   여기에도 연습합니다
+
 @app.route('/api/register', methods=["POST"])
 def info_post():
     id_receive = request.form['id_give']
@@ -170,6 +174,8 @@ def info_post():
 def web_mars_get():
     info_list = list(db.info.find({}, {'_id': False}))
     return jsonify({'infos': info_list})
+
+#여기까지
 
 
 if __name__ == '__main__':

@@ -13,9 +13,8 @@
 
 
     <!--CSS 적용 해설
-    두번쨰-2 변경
-    지웠다
-    head는 지웠다 ㅋㅋ
+
+    head는 화면 윗 부분
     body는 화면 아랫 부분
     card는 body 안 쪽 하얀색 카드
     input-box는 아이디 비번 입력 칸들
@@ -120,8 +119,7 @@
                     data: {id_give: id, pw_give: pw},
                     success: function (response) {
                         alert(response['msg'])
-                        window.location.reload()
-                        //있다가 이걸로 바꿔줄 것: window.location.href='/login'
+                        window.location.href='/login'
                     }
                 })
 
@@ -137,7 +135,7 @@
 
 
         }
-
+        #회원 중복확인 기능 아직 작동 안되서 주석처리 했습니다(동규)
         {#function double_check() {#}
         {#    $.ajax({#}
         {#        type: 'GET',#}
@@ -174,7 +172,7 @@
         {##}
         {##}
         {#}#}
-
+        #여기까지
 
 
 

@@ -123,7 +123,7 @@
                         alert(response['msg'])
                     }
 
-                    window.location.href = '/api/postings/{{ page.post_id }}';
+                    window.location.reload();
 
                 }
             })
@@ -185,9 +185,14 @@
             <div>{{ page.message }}</div>
         </div>
 
+        {#
+            버튼 클릭시 메인 페이지로 이동
+            최종파일에서 라우터 수정해야함
+        #}
         <div class="btn">
             <button onclick="add()" type="button" class="btn btn-dark">참여하기({{ page.count | length }}/{{ page.maxCount }})</button>
             <button onclick="deletePost()" type="button" class="btn btn-dark">게시물 삭제</button>
+            <button onclick="location.href='/'" type="button" class="btn btn-dark">돌아기기</button>
         </div>
 
         <div class="comment-list">
