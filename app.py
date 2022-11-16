@@ -91,7 +91,7 @@ def add_count():
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
 
 
-#회원가입 DB로 저(장)   여기에도 연습합니다
+#회원가입 DB로 저장하는 부분
 @app.route('/api/register', methods=["POST"])
 def info_post():
     id_receive = request.form['id_give']
@@ -112,6 +112,8 @@ def info_post():
 def web_mars_get():
     info_list = list(db.info.find({}, {'_id': False}))
     return jsonify({'infos': info_list})
+
+#여기까지
 
 
 
