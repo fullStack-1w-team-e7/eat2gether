@@ -27,7 +27,6 @@
         }
 
         .mytitle {
-            background-color: #F3ECE4;
             width: 100%;
             height: 250px;
 
@@ -83,12 +82,13 @@
             color: black;
 
             border-radius: 10rem;
-            border: 1.5px solid black;
+            border: 1.5px solid white;
             margin-top: 30px;
         }
 
         .posting-btn>button:hover {
-            border: 2px solid black;
+            background-color: #FCE75F;
+            border: 3px solid white;
         }
 
         /* cards */
@@ -111,24 +111,49 @@
 
         .title-box {
             margin: 20px 0px 10px 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
 
+        .card-title-name {
+            font-weight: bold;
+            inline-size: 70%;
+        }
+
+        .join-btn {
+            background-color: #FBFAD8;
+            color: black;
+
+            border-radius: 50px;
+            border: 1px solid #F2EA9B;
+
+            position: absolute;
+            right: 5%;
+        }
+
+        .join-btn:hover {
+            background-color: #F2EA9B;
+            border: 1.5px solid whitesmoke;
+        }
+
+        .card-address,
+        .card-text,
+        .card-date,
+        .card-time,
+        .card-meeting-place,
+        .card-payment,
+        .card-capacity {
             display: flex;
             flex-direction: row;
         }
 
-        .card-title {
-            font-weight: bold;
+        .bold {
+            font-weight: 600;
         }
 
-        .join-btn {
-            background-color: transparent;
-            color: black;
-
-            border-radius: 50px;
-            border: 1px solid lightgray;
-
-            position: relative;
-            right: 0;
+        .desc {
+            inline-size: 70%;
         }
 
         /* modal */
@@ -227,18 +252,33 @@
                             <div class="card h-100">
                                 <img class="card-img" alt="${post_id}" src="${img}" onclick="routing(${post_id})"/>
                                 <div class="title-box">
-                                    <h5 class="card-title" onclick="routing(${post_id})">식당명 : ${restaurant}</h5>
+			                        <h5 class="card-title-name" onclick="routing(${post_id})">${restaurant}</h5>
                                     <button class='join-btn' onclick='addCount(${post_id})'>같이 먹자</button>
                                 </div>
-                                <div class='address'>주소 : ${address}</div>
-                                <div class='card-body'>
-                                    <pre class="card-text">${message}</pre>
-                                    <p class='datails'> 날짜 : ${date}<br>
-                                        시간 : ${time}<br>
-                                        장소 : ${meetingPlace}<br>
-                                        결제방식 : ${payment}<br>
-                                        정원 : ${count.length}/${maxCount}명
-                                    </p>
+                                <div class='card-address'>
+                                    <p class='bold'>주소 :</p> 
+                                    <p class='desc'>&nbsp${address}</p>
+                                </div>
+                                <p class="card-text">${message}</p>
+                                <div class='card-date'>
+                                    <p class='bold'>날짜 : </p>
+                                    <p class='desc'>&nbsp${date}</p>
+                                </div>
+                                <div class='card-time'>
+                                    <p class='bold'>시간 : </p>
+                                    <p class='desc'>&nbsp${time}</p>
+                                </div>
+                                <div class='card-meeting-place'>
+                                    <p class='bold'>장소 : </p>
+                                    <p class='desc'>&nbsp${meetingPlace}</p>
+                                </div>
+                                <div class='card-payment'>
+                                    <p class='bold'>결제방식 : </p>
+                                    <p class='desc'>&nbsp${payment}</p>
+                                </div>
+                                <div class='card-capacity'>
+                                    <p class='bold'>정원 : </p>
+                                    <p class='desc'>&nbsp${count.length}명/${maxCount}명</p>
                                 </div>
                             </div>
                         </div>
