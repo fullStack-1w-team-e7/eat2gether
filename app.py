@@ -1,10 +1,13 @@
+import os
+from dotenv import dotenv_values
 from pymongo import MongoClient
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
-client = MongoClient(
-    'mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority')
+config = dotenv_values('.env')
+atlas_url = config['MONGODB_CLIENT']
 
+client = MongoClient(atlas_url)
 db = client.project7
 
 # main page
@@ -91,8 +94,7 @@ def add_count():
         return jsonify({'msg': '이미 같이 먹기로 하였습니다!'})
 
 
-
-#회원가입 DB로 저장하는 부분
+# 회원가입 DB로 저장하는 부분
 
 # 상세 페이지 이동 관련
 
@@ -175,7 +177,7 @@ def web_mars_get():
     info_list = list(db.info.find({}, {'_id': False}))
     return jsonify({'infos': info_list})
 
-#여기까지
+# 여기까지
 
 
 if __name__ == '__main__':
