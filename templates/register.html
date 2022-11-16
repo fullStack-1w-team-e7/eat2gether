@@ -138,43 +138,6 @@
 
         }
 
-        {#function double_check() {#}
-        {#    $.ajax({#}
-        {#        type: 'GET',#}
-        {#        url: "/api/register",#}
-        {#        data: {},#}
-        {#        success: function(response) {#}
-        {#            let rows = response['infos']#}
-        {##}
-        {#            for (i=0; i<rows.length; i++) {#}
-        {#                let ids = rows[i]['id']#}
-        {#                let id = $('#id');#}
-        {#                let test = 0#}
-        {#                if (id === ids) {#}
-        {#                        test+=1#}
-        {#                        alert('아이디가 겹칩니다')#}
-        {#                        break#}
-        {#                    }#}
-        {##}
-        {#                if (test===0){#}
-        {##}
-        {##}
-        {#                    alert('사용 가능한 아이디 입니다')#}
-        {#                }#}
-        {#                let test = 0;#}
-        {#            }#}
-        {##}
-        {##}
-        {#        }#}
-        {##}
-        {##}
-        {#    })#}
-        {##}
-        {##}
-        {##}
-        {##}
-        {#}#}
-
 
 
 
