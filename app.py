@@ -7,10 +7,24 @@ client = MongoClient(
 
 db = client.project7
 
+SECRET_KEY = 'SPARTA'
+
+import jwt
+
+import datetime
+
+import hashlib
+
+
 
 @app.route('/')
 def home():
     return render_template('main.html')
+
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
 
 
 @app.route("/api/postings", methods=["POST"])
@@ -169,6 +183,18 @@ def info_post():
 def web_mars_get():
     info_list = list(db.info.find({}, {'_id': False}))
     return jsonify({'infos': info_list})
+
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
+
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+
+    result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
+    print(result)
+
+
 
 
 
