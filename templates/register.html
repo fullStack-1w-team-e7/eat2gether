@@ -111,7 +111,7 @@
             let id = $('#id').val();
             let pw = $('#pw').val();
 
-            console.log(id, pw)
+
             if (pw === pw_check) {
 
                 $.ajax({
@@ -141,9 +141,17 @@
 
 
         function double_check() {
-            a
+            let id = $('#id').val();
 
+            $.ajax({
+                type: 'GET',
+                url: '/api/register',
+                data: {},
+                success: function (response) {
 
+                    console.log(response)
+                }
+            })
         }
 
 

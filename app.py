@@ -107,6 +107,11 @@ def info_post():
 
     return jsonify({'msg': '가입 완료!'})
 
+#중복확인 api
+@app.route('/api/register', methods=["GET"])
+def double_check():
+    info_list = list(db.info.find({}, {'_id': False}))
+    return jsonify({'inf': info_list})
 
 
 #회원가입 창 (커밋 잘되나)
