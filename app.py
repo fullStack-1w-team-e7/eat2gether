@@ -1,3 +1,4 @@
+import certifi
 import hashlib
 import datetime
 import jwt
@@ -6,15 +7,18 @@ from dotenv import dotenv_values
 from pymongo import MongoClient
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 app = Flask(__name__)
+ca = certifi.where()
+
 
 config = dotenv_values('.env')
 atlas_url = config['MONGODB_CLIENT']
+print(atlas_url)
 
-client = MongoClient(atlas_url)
-db = client.project7
+client = MongoClient(
+    'mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+db = client.dbsparta
 
-SECRET_KEY = config['SECRET_KEY']
-print(SECRET_KEY)
+SECRET_KEY = 'SPARTA'
 
 
 #################################
