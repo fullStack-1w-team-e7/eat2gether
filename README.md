@@ -63,10 +63,10 @@
 지난 4일간의 기록을 블로그에 남겼다.
 블로그에는 없지만, 깃을 사용해 푸쉬, 풀, 풀 리퀘스트, 머지 등... 많은 에러를 만났다. 대부분의 개발 시간에는 깃을 통해 파일을 머지하고, 머지 컨플릭트를 해결하는 데에 사용했다.
 
-[(20221114) 회원가입 및 로그인 - 해시함수와 JWT / REST API]https://dev-jn.tistory.com/85
+[(20221114) 회원가입 및 로그인 - 해시함수와 JWT / REST API](https://dev-jn.tistory.com/85)
 
-[(20221115) onclick 함수에 매개변수 사용, dynamic routing]https://dev-jn.tistory.com/86
+[(20221115) onclick 함수에 매개변수 사용, dynamic routing](https://dev-jn.tistory.com/86)
 
-[(20221116) .env로 민감정보 감추기 (language : python)]https://dev-jn.tistory.com/87
+[(20221116) .env로 민감정보 감추기 (language : python)](https://dev-jn.tistory.com/87)
 
-[(20221118) 1주차 풀스택 미니 프로젝트 회고]https://dev-jn.tistory.com/88
+[(20221118) 1주차 풀스택 미니 프로젝트 회고](https://dev-jn.tistory.com/88)
