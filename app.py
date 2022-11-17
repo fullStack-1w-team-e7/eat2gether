@@ -7,11 +7,13 @@ from flask import Flask, render_template, jsonify, request, session, redirect, u
 app = Flask(__name__)
 ca = certifi.where()
 
-client = MongoClient('mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority')
+config = dotenv_values('.env')
+atlas_url = config['MONGODB_CLIENT']
 
+client = MongoClient(atlas_url, tlsCAFile=ca)
 db = client.project7
 
-SECRET_KEY = 'SPARTA'
+SECRET_KEY = config['SECRET_KEY']
 
 
 #################################
@@ -179,7 +181,7 @@ def post():
 @app.route("/api/postings/add", methods=["POST"])
 def add_count():
     post_id_receive = int(request.form['post_id_give'])
-    print('post_id:', post_id_receive, type(post_id_receive))
+
     user_receive = request.form['count_give']
     post = db.postings.find_one(
         {'post_id': post_id_receive}, {'_id': False})
@@ -192,9 +194,7 @@ def add_count():
         return jsonify({'msg': '정원 초과이 초과되어 같이 먹을 수 없어요ㅠㅠ'})
     elif len(participants) < maxCount and user_receive not in participants:
         db.postings.update_one({'post_id': post_id_receive}, {
-            '$push': {'count': user_receive}})
-        print(db.postings.find_one(
-            {'post_id': post_id_receive}, {'_id': False})['count'])
+                               '$push': {'count': user_receive}})
         return jsonify({'msg': '참가 완료!'})
     else:
         return jsonify({'msg': '이미 같이 먹기로 하였습니다!'})
