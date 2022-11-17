@@ -14,63 +14,93 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <title>같이 먹자</title>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
 
     <style>
         * {
-            font-family: 'Gowun Dodum', sans-serif;
+            font-family: "Gowun Dodum", sans-serif;
+        }
+
+        body {
+            background-color: #F2EA9B;
         }
 
         .mytitle {
-            background-color: wheat;
-
-            height: 250px;
             width: 100%;
+            height: 250px;
 
-            /*background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url("https://files.slack.com/files-pri/T01L2TNGW3T-F04ASR70NPM/____________________________________________.jpg");
+            background-color: #F3ECE4;
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0)),
+                url("");
             background-position: center;
-            background-size: cover; */
+            background-size: cover;
 
             color: black;
 
+            text-align: center;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        .mypost {
-            width: 500px;
+        .mytitle-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mytitle-img {
+            width: 180px;
+            height: 150px;
+            border-radius: 50%;
+        }
+
+        .mybody {
+            width: 400px;
 
             margin: 20px auto 0px auto;
             box-shadow: 0px 0px 3px 0px gray;
             padding: 20px;
 
+            border-radius: 20px;
+            background-color: white;
+        }
+
+        .mybody-box {
+            background-color: white;
         }
 
         .btn_box {
-            margin: 10px auto 10px auto;
+            margin: 20px auto 20px auto;
+        }
 
+        .btn_box>button {
+            margin: 20px auto 20px auto;
         }
     </style>
     <script>
         {% if msg %}
         alert("{{ msg }}")
         {% endif %}
-
+        // ['쿠키'라는 개념에 대해 알아봅시다]
+        // 로그인을 구현하면, 반드시 쿠키라는 개념을 사용합니다.
+        // 페이지에 관계없이 브라우저에 임시로 저장되는 정보입니다. 키:밸류 형태(딕셔너리 형태)로 저장됩니다.
+        // 쿠키가 있기 때문에, 한번 로그인하면 네이버에서 다시 로그인할 필요가 없는 것입니다.
+        // 브라우저를 닫으면 자동 삭제되게 하거나, 일정 시간이 지나면 삭제되게 할 수 있습니다.
         function login() {
             $.ajax({
                 type: "POST",
                 url: "/api/login",
-                data: { id_give: $('#userid').val(), pw_give: $('#userpw').val() },
+                data: { id_give: $('#inputId').val(), pw_give: $('#inputPassword').val() },
                 success: function (response) {
-                    console.log(response)
+                    console.log('성공!')
                     if (response['result'] == 'success') {
-                        console.log('로그인 성공');
                         // 로그인이 정상적으로 되면, 토큰을 받아옵니다.
                         // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.
                         $.cookie('mytoken', response['token']);
-
                         alert('로그인 완료!')
                         window.location.href = '/'
                     } else {
@@ -81,22 +111,27 @@
             })
         }
 
-
     </script>
 </head>
 
 <body>
     <div class="mytitle">
-        <h1>같이 먹자</h1>
+        <div class='mytitle-box'>
+            <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img' />
+            <h1>같이 먹자</h1>
+        </div>
     </div>
-    <div class="mypost">
-        <div class="log_in_wrap">
-            <div class="wrap">
-                <input type="text" class="form-control" id="userid" />
+
+    <div class="mybody">
+        <div class="mybody-box">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">ID</label>
             </div>
-            <div class="wrap">
-                <input type="password" class="form-control" id="userpw" />
-                <p class="text"></p>
+
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
             </div>
             <div class="btn_box">
                 <div class="d-grid gap-2">
@@ -104,15 +139,16 @@
                 </div>
                 <hr>
                 <div> 아직 회원이 아니라면? </hr>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-outline-secondary" type="button">회원 가입하기</button>
+                    <div class="btn_box">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-secondary" type="button">회원 가입하기</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
-
-
-    </div>
     </div>
     </div>
 
