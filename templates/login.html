@@ -111,6 +111,10 @@
             })
         }
 
+        function register() {
+            window.location.href = '/register'
+        }
+
     </script>
 </head>
 
@@ -125,12 +129,12 @@
     <div class="mybody">
         <div class="mybody-box">
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input class="form-control" id="inputId" placeholder="ID">
                 <label for="floatingInput">ID</label>
             </div>
 
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="btn_box">
@@ -141,7 +145,8 @@
                 <div> 아직 회원이 아니라면? </hr>
                     <div class="btn_box">
                         <div class="d-grid gap-2">
-                            <button class="btn btn-outline-secondary" type="button">회원 가입하기</button>
+                            <button class="btn btn-outline-secondary" type="button" onclick='register()'>회원
+                                가입하기</button>
                         </div>
                     </div>
                 </div>
