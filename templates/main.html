@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
@@ -44,6 +45,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .logout-btn {
+            border-radius: 1rem;
+            border: 1px solid whitesmoke;
+
+            position: absolute;
+            top: 1%;
+            right: 3%;
+        }
+
+        .logout-btn:hover {
+            background-color: #F2D3AE;
+            border: 1.5px solid whitesmoke;
         }
 
         .mytitle-box {
@@ -205,14 +220,20 @@
         }
     </style>
     <script>
+        const currentUser = '{{ user_id }}'
         $(document).ready(function () {
             listing();
-
-            // cookie를 이용해 userid 정보를 가져오고, 
         });
+        console.log('user_info:', currentUser);
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
 
         let inputCount = 0;
-        //모달에서 인원수 선택할 때 '직접입력 입력칸 숨기기'
+        //모달에서 인원수 선택할 때 '직접입력 입력칸 창 띄워주기'
         function getInputMaxCountDriect(value) {
             if (value == "direct") {
                 let inputNum = prompt('같이 먹을 최대 인원을 숫자로 입력해주세요!', 'number')
@@ -256,7 +277,7 @@
                                     <button class='join-btn' onclick='addCount(${post_id})'>같이 먹자</button>
                                 </div>
                                 <div class='card-address'>
-                                    <p class='bold'>주소 :</p> 
+                                    <p class='bold'>주소 :</p>
                                     <p class='desc'>&nbsp${address}</p>
                                 </div>
                                 <p class="card-text">${message}</p>
@@ -329,13 +350,11 @@
             console.log(maxcount);
 
 
-            //로그인 기능 활성화 되면 쿠키를 이용해서 id 값 받아오기
-            let user_id = 'user_writer'//포스팅 올린 유저 id 넣어주기
 
             $.ajax({
                 type: "POST",
                 url: "api/postings",
-                data: { restaurant_give: restaurant, message_give: message, date_give: date, time_give: time, meetingPlace_give: meetingPlace, payment_give: payment, maxcount_give: maxcount, count_give: user_id },
+                data: { restaurant_give: restaurant, message_give: message, date_give: date, time_give: time, meetingPlace_give: meetingPlace, payment_give: payment, maxcount_give: maxcount, count_give: currentUser },
                 success: function (response) {
                     alert(response["msg"]);
                     window.location.reload();
@@ -344,12 +363,10 @@
         }
 
         function addCount(id) {
-            //로그인 기능 활성화 되면 쿠키를 이용해서 id 값 받아오기
-            let user_id = 'uaser_add' //참여하기 누른 유저 id 가져오기;
             $.ajax({
                 type: "POST",
                 url: "api/postings/add",
-                data: { post_id_give: id, count_give: user_id },
+                data: { post_id_give: id, count_give: currentUser },
                 success: function (response) {
                     alert(response["msg"]);
                     window.location.reload();
@@ -358,7 +375,7 @@
         }
 
         function routing(id) {
-            location.href = `/api/postings-detail/${id}`
+            window.location.href = `/api/postings-detail/${id}`
         }
     </script>
 </head>
@@ -369,6 +386,7 @@
             <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img' />
             <h1>같이 먹자</h1>
         </div>
+        <button class='logout-btn' onclick='logout()'>로그아웃</button>
     </div>
     <div class="main-body">
         <!-- Button trigger modal -->

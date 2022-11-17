@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html padding:0; lang="kr">
+
 <head>
     <meta charset="UTF-8">
     <title>같이 먹자</title>
@@ -7,13 +9,10 @@
     <!--Jquery 임포트-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--구글 웹폰트 적용 1/2: JUA체 -->
-   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
 
 
     <!--CSS 적용 해설
-
     head는 화면 윗 부분
     body는 화면 아랫 부분
     card는 body 안 쪽 하얀색 카드
@@ -21,14 +20,8 @@
     text-box는 입력 칸 아래 글자들
     button은 맨 아래 회원가입/취소하기 버튼-->
     <style>
-
-
-
-
-
-
         /*구글 웹폰트 적용 2/2: JUA체 */
-    * {
+        * {
             font-family: "Gowun Dodum", sans-serif;
         }
 
@@ -41,25 +34,25 @@
 
 
         .mytitle {
-                    width: 100%;
-                    height: 250px;
-                    vertical-align: top;
-                    background-color: #F3ECE4;
-                    background-image: linear-gradient(0deg,
-                            rgba(0, 0, 0, 0),
-                            rgba(0, 0, 0, 0)),
-                        url("");
-                    background-position: center;
-                    background-size: cover;
+            width: 100%;
+            height: 250px;
+            vertical-align: top;
+            background-color: #F3ECE4;
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0)),
+                url("");
+            background-position: center;
+            background-size: cover;
 
-                    color: black;
+            color: black;
 
-                    text-align: center;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-                }
+        }
 
         .mytitle-img {
             width: 180px;
@@ -85,6 +78,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .card {
             width: 500px;
             height: 450px;
@@ -99,6 +93,7 @@
 
 
         }
+
         .input-box {
             width: 450px;
             height: 60px;
@@ -106,9 +101,10 @@
             background-color: #FFFFFF;
             border-radius: 5px;
         }
+
         .text-box {
-            width:450px;
-            height:60px;
+            width: 450px;
+            height: 60px;
             background-color: #FFFFFF;
         }
 
@@ -129,6 +125,7 @@
             margin: 0 0px 0 0;
             box-sizing: border-box;
         }
+
         .double-button {
             width: 120px;
             height: 60px;
@@ -137,6 +134,7 @@
         }
     </style>
     <script>
+
         function register() {
             let pw_check = $('#pw_check').val();
             let id = $('#id').val();
@@ -148,41 +146,45 @@
                 $.ajax({
                     type: 'POST',
                     url: '/api/register',
-                    data: {id_give: id, pw_give: pw},
+                    data: { id_give: id, pw_give: pw },
                     success: function (response) {
                         alert(response['msg'])
-                        window.location.href='/login'
+                        window.location.href = '/login'
                     }
                 })
 
             }
-            else{
+            else {
 
                 alert('앞서 입력한 비밀번호와 일치하지 않습니다')
 
             }
-
-
-
-
-
         }
 
+        function double_check() {
+            let inputId = $('#id').val()
+            if (inputId != '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/register/double_check',
+                    data: { id_give: $('#id').val() },
+                    success: function (response) {
+                        alert(response['msg'])
+                    }
+                })
+            }
 
-
-
+        }
     </script>
-
 </head>
+
 <body>
     <div class="mytitle">
         <div class='mytitle-box'>
-            <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img'mytitle-img />
+            <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img' mytitle-img />
             <h1>같이 먹자</h1>
         </div>
     </div>
-
-
     <div class="body">
         <div class="card">
             <div><input id="id" class="id-box" placeholder="아이디 입력">
@@ -193,12 +195,9 @@
             <div class="text-box">8자리 이상 영문 숫자 특수기호 조합</div>
             <input id="pw_check" class="input-box" type="password" placeholder="비밀번호 다시 입력">
             <div class="text-box">비밀번호를 다시 입력해 주세요</div>
-            <div>
-                <button onclick="register()" class="button">회원가입</button>
-                <button class="button">취소하기</button>
-            </div>
+            <div><button onclick="register()" class="button">회원가입</button> <button class="button">취소하기</button></div>
         </div>
-
     </div>
 </body>
+
 </html>
