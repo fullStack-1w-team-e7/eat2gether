@@ -126,6 +126,7 @@ def api_valid():
 #################################
 
 # 회원가입 DB로 저(장)   여기에도 연습합니다
+# 회원가입 DB로 저(장)   여기에도 연습합니다
 @app.route('/api/register', methods=["POST"])
 def info_post():
     id_receive = request.form['id_give']
@@ -137,15 +138,9 @@ def info_post():
         'id': id_receive,
         'pw': pw_hash
     }
-    db.test_yn.insert_one(doc)
+    db.info.insert_one(doc)
 
     return jsonify({'msg': '가입 완료!'})
-
-
-@app.route("/api/register", methods=["GET"])
-def web_mars_get():
-    info_list = list(db.test_yn.find({}, {'_id': False}))
-    return jsonify({'infos': info_list})
 
 
 #################################
@@ -209,7 +204,6 @@ def post():
 # 메인 페이지에서 게시물 안에 "같이 먹기" 버튼 클릭했을 때, 참여자 명단 추가하기
 @app.route("/api/postings/add", methods=["POST"])
 def add_count():
-
     post_id_receive = int(request.form['post_id_give'])
     print('post_id:', post_id_receive, type(post_id_receive))
     user_receive = request.form['count_give']
@@ -239,11 +233,14 @@ def add_count():
 # 상세 페이지 이동 관련
 
 # 상세 페이지에서 식사 원정대 참여
-# member - jisoo로 고정
-# 추후 로그인, 회원가입 기능 완료되면 파라미터 수정
-@app.post('/api/add/<int:post_id>/<member>')
-def counting(post_id, member):
+# path variable 수정 완료
+@app.post('/api/add/<int:post_id>')
+def counting(post_id):
     page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
+
+    params = request.get_json()
+    member = params['give_user']
+    print(member)
 
     participant_list = page_info['count']
     maxCount = int(page_info['maxCount'])
@@ -266,13 +263,37 @@ def counting(post_id, member):
     return jsonify({'result': 'fail', 'msg': '정원초과입니다.'})
 
 
+# 식사 원정대 참여 취소
+@app.post('/api/delete-comment/<int:post_id>')
+def delete_comment(post_id):
+    page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
+
+    print('delete-comment')
+
+    params = request.get_json()
+    member = params['give_user']
+
+    participant_list = page_info['count']
+    print(participant_list)
+
+    if member in participant_list:
+        participant_list.remove(member)
+        db.postings.update_one({'post_id': post_id}, {
+                               '$set': {'count': participant_list}})
+
+        return jsonify({'result': 'success', 'msg': '참여를 취소하셨습니다'})
+    else:
+        print('여기 오류남')
+        return jsonify({'result': 'fail', 'msg': '식사에 참여하지 않은 상태입니다.'})
+
+
 # 게시물 삭제
 # member - jisoo로 고정
-# 추후 로그인, 회원가입 기능 완료되면 파라미터 수정
-@app.post('/api/delete-post/<int:post_id>/<member>')
-def delete_post(post_id, member):
-
-    print('넘어오냐?')
+# path variable 수정 완료
+@app.post('/api/delete-post/<int:post_id>')
+def delete_post(post_id):
+    params = request.get_json()
+    member = params['give_user']
 
     page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
 
@@ -286,5 +307,33 @@ def delete_post(post_id, member):
         return jsonify({'result': 'fail', 'msg': '삭제권한이 없습니다'})
 
 
+# 메인페이지에서 게시물 클릭 시 상세페이지로 이동
+@app.get('/api/postings-detail/<int:post_id>')
+def post_info(post_id):
+    page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
+    print(page_info)
+    return render_template('detail.html', page=page_info)
+
+
+# 회원 유효성 검사
+# 로그인 예제 파일 그대로 사용
+# 토큰 인증시 회원 아이디만 반환하는 역할
+@app.get('/api/validate')
+def api_validate():
+    token_receive = request.cookies.get('mytoken')
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload)
+
+        userinfo = db.info.find_one({'id': payload['id']}, {'_id': 0})
+        return jsonify({'result': 'success', 'id': userinfo['id']})
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+
+
+# 여기까지
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
