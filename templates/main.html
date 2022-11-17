@@ -47,6 +47,20 @@
             align-items: center;
         }
 
+        .logout-btn {
+            border-radius: 1rem;
+            border: 1px solid whitesmoke;
+
+            position: absolute;
+            top: 1%;
+            right: 3%;
+        }
+
+        .logout-btn:hover {
+            background-color: #F2D3AE;
+            border: 1.5px solid whitesmoke;
+        }
+
         .mytitle-box {
             display: flex;
             justify-content: center;
@@ -206,7 +220,6 @@
         }
     </style>
     <script>
-
         const currentUser = '{{ user_id }}'
         $(document).ready(function () {
             listing();
@@ -220,7 +233,7 @@
         }
 
         let inputCount = 0;
-        //모달에서 인원수 선택할 때 '직접입력 입력칸 숨기기'
+        //모달에서 인원수 선택할 때 '직접입력 입력칸 창 띄워주기'
         function getInputMaxCountDriect(value) {
             if (value == "direct") {
                 let inputNum = prompt('같이 먹을 최대 인원을 숫자로 입력해주세요!', 'number')
@@ -335,6 +348,8 @@
                 maxcount = $("#maxcount option:checked").val();
             }
             console.log(maxcount);
+
+
 
             $.ajax({
                 type: "POST",
