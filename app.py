@@ -12,13 +12,11 @@ ca = certifi.where()
 
 config = dotenv_values('.env')
 atlas_url = config['MONGODB_CLIENT']
-print(atlas_url)
 
-client = MongoClient(
-    'mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
-db = client.dbsparta
+client = MongoClient(atlas_url, tlsCAFile=ca)
+db = client.project7
 
-SECRET_KEY = 'SPARTA'
+SECRET_KEY = config['SECRET_KEY']
 
 
 #################################
@@ -29,8 +27,9 @@ def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload['id'])
         user_info = db.test_yn.find_one({"id": payload['id']})
-        return render_template('main.html', nickname=user_info["id"])
+        return render_template('main.html', user_id=user_info["id"])
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -66,9 +65,6 @@ def post_info(post_id):
 def api_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
-    print('로그인 기능 확인:', id_receive, pw_receive)
-    db_list = list(db.test_yn.find({}, {'_id': False}))
-    print(db_list)
 
     # 회원가입 때와 같은 방법으로 pw를 암호화합니다.
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
@@ -85,7 +81,7 @@ def api_login():
         # exp에는 만료시간을 넣어줍니다. 만료시간이 지나면, 시크릿키로 토큰을 풀 때 만료되었다고 에러가 납니다.
         payload = {
             'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -237,7 +233,7 @@ def add_count():
 
 
 #################################
-##      메인 페이지 API        ##
+##      상세 페이지 API        ##
 #################################
 
 # 상세 페이지 이동 관련
