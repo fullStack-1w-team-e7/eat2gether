@@ -1,14 +1,20 @@
 import os
 from dotenv import dotenv_values
 from pymongo import MongoClient
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 app = Flask(__name__)
+import certifi
+ca=certifi.where()
+
+
 
 config = dotenv_values('.env')
 atlas_url = config['MONGODB_CLIENT']
+print(atlas_url)
 
-client = MongoClient(atlas_url)
-db = client.project7
+client = MongoClient('mongodb+srv://jisoo:jisoo0806@cluster0.d53mxq3.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+db = client.dbsparta
+
 
 SECRET_KEY = 'SPARTA'
 
@@ -22,7 +28,9 @@ import hashlib
 
 @app.route('/')
 def home():
-    return render_template('main.html')
+    print(db)
+    return render_template('register.html')
+
 
 @app.route('/login')
 def login():
@@ -77,7 +85,7 @@ def post_get():
 
 @app.route("/api/restaurant_list", methods=["GET"])
 def rest_get():
-    restaurant_list = list(db.restaurant_list.find({}, {'_id': False}))
+    restaurant_list = list(db.restaurant_list.find({}))
     return jsonify({'restaurants': restaurant_list})
 
 
@@ -189,22 +197,35 @@ def info_post():
     return jsonify({'msg': '가입 완료!'})
 
 
-@app.route("/api/register", methods=["GET"])
-def web_mars_get():
-    info_list = list(db.info.find({}, {'_id': False}))
-    return jsonify({'infos': info_list})
-
 
 @app.route("/api/login", methods=["POST"])
 def api_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
+    print(id_receive, pw_receive)
 
+    # 비밀번호를 암호화
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    print(pw_hash)
 
-    result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
+    result = db.info.find_one({'id': id_receive, 'pw': pw_hash})
+    users_list = list(db.info.find({}, {'_id': False}))
+    print(users_list)
     print(result)
 
+    if result is not None:
+
+        payload = {
+            'id' : id_receive,
+            'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
+        }
+        # 로그인이 얼마나 유지되는가
+
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+        return jsonify({'result': 'success', 'mytoken': token})
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
 
