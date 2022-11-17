@@ -11,26 +11,57 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-
+    <script src="https://kit.fontawesome.com/403357b174.js" crossorigin="anonymous"></script>
     <title>상세 페이지</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
+
 
     <style>
         * {
-            font-family: 'Gowun Dodum', sans-serif;
+            font-family: "Gowun Dodum", sans-serif;
+        }
+
+        body {
+            background-color: #F2EA9B;
         }
 
         .mytitle {
             width: 100%;
-            height: 200px;
+            height: 250px;
 
-            background-color: #F6EDE6;
+            background-color: #F3ECE4;
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0)),
+                url("");
+            background-position: center;
+            background-size: cover;
 
+            color: black;
+
+            text-align: center;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+        }
+
+        .mytitle-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mytitle-img {
+            width: 180px;
+            height: 150px;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 30px 0;
         }
 
         .detail-info {
@@ -110,6 +141,17 @@
             border-radius: 15px;
 
             background-color: white;
+        }
+
+        {#.detail-info .comment button {#}
+        {#    margin-left: 600px;#}
+
+        .comment .float {
+            float: left;
+        }
+
+        .comment button {
+            margin-left: 90%;
         }
 
     </style>
@@ -223,8 +265,11 @@
 </head>
 
 <body>
-    <div class="mytitle">
-        <h1>같이먹자</h1>
+     <div class="mytitle">
+        <div class='mytitle-box'>
+            <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img' />
+            <h1>같이 먹자</h1>
+        </div>
     </div>
 
     <div class="detail-info">
@@ -236,13 +281,13 @@
 
             <div class="detail-info__date">
                 <div>
-                    모임 일시: {{ page.date }} {{ page.time  }}
+                    <b>모임 일시 :</b> {{ page.date }} {{ page.time  }}
                 </div>
                 <div>
-                    모집 장소: {{ page.meetingPlace }}
+                    <b>모집 장소 :</b> {{ page.meetingPlace }}
                 </div>
                 <div>
-                    모임장: {{ page.count[0] }}
+                    <b>모임장 :</b> {{ page.count[0] }}
                 </div>
             </div>
          </div>
@@ -252,7 +297,7 @@
         </div>
 
         <div class="content">
-            <div>식당주소 : {{ page.address }}</div>
+            <div><b>식당주소 :</b> {{ page.address }}</div>
             <div>{{ page.message }}</div>
         </div>
 
@@ -269,8 +314,12 @@
         <div class="comment-list">
             {% for participant in page.count %}
                 <div class="comment">
-                    {{ participant }}님이 참여하셨습니다!
-                    <button onclick="deleteComment()" type="button" class="btn btn-outline-danger">취소</button>
+                    <div class="float">
+                        <b>{{ participant }}</b>님이 참여하셨습니다!
+                    </div>
+                    <div>
+                        <button onclick="deleteComment()" type="button" class="btn btn-outline-danger">취소</button>
+                    </div>
                 </div>
             {% endfor %}
         </div>
