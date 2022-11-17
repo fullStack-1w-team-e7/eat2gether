@@ -53,7 +53,7 @@ def register():
 def post_info(post_id):
     page_info = db.postings.find_one({'post_id': post_id}, {'_id': False})
     print(page_info)
-    return render_template('detail.html', page=page_info)
+    return render_template('detail3.html', page=page_info)
 
 
 #################################
@@ -107,6 +107,19 @@ def info_post():
     db.info.insert_one(doc)
 
     return jsonify({'msg': '가입 완료!'})
+
+
+@app.route('/api/register/double_check', methods=["POST"])
+def check_id():
+    id_receive = request.form['id_give']
+
+    result = db.info.find_one({'id': id_receive})
+    print(result)
+
+    if result is None:
+        return jsonify({'msg': '사용 가능한 아이디입니다!'})
+    else:
+        return jsonify({'msg': '이미 사용 중인 아이디입니다!'})
 
 
 #################################

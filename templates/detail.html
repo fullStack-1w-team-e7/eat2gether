@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/403357b174.js" crossorigin="anonymous"></script>
     <title>상세 페이지</title>
 
@@ -97,10 +97,10 @@
             padding-left: 30px;
         }
 
-       .detail-info .detail-info__date {
+        .detail-info .detail-info__date {
             margin-top: 50px;
             margin-right: 30px;
-       }
+        }
 
         .detail-info .img {
             display: flex;
@@ -143,8 +143,6 @@
             background-color: white;
         }
 
-        {#.detail-info .comment button {#}
-        {#    margin-left: 600px;#}
 
         .comment .float {
             float: left;
@@ -153,104 +151,105 @@
         .comment button {
             margin-left: 90%;
         }
-
     </style>
 
     <script>
-        {#
-            async 키워드로 add를 비동기 함수로 변환
-            fetch api로 '/api/validate' 호출
-            promise 객체 반환을 기다리기 위해 await
-        #}
+        console.log('test');
+        // {#
+        //     async 키워드로 add를 비동기 함수로 변환
+        //     fetch api로 '/api/validate' 호출
+        //     promise 객체 반환을 기다리기 위해 await
+        // #
+        // }
 
         async function add() {
-              const response = await fetch('/api/validate', {method: 'GET'});
-              const validateToken = await response.json();
+            const response = await fetch('/api/validate', { method: 'GET' });
+            const validateToken = await response.json();
 
-              {# 토큰이 존재할 경우 #}
-              if(validateToken['result'] === 'success') {
+            // {# 토큰이 존재할 경우 # }
+            if (validateToken['result'] === 'success') {
 
-                  const response = await fetch('/api/add/{{ page.post_id }}', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({'give_user': validateToken['id'] })
-                  });
+                const response = await fetch('/api/add/{{ page.post_id }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 'give_user': validateToken['id'] })
+                });
 
-                  const result = await response.json();
+                const result = await response.json();
 
-                  {# 토큰이 존재하고 예약에 성공한 경우 #}
-                  if(result['result'] === 'success') {
-                      alert(result['msg']);
+                // {# 토큰이 존재하고 예약에 성공한 경우 # }
+                if (result['result'] === 'success') {
+                    alert(result['msg']);
 
-                  {# 토큰은 존재하지만 정원초과인 경우우 #}
-                 } else {
-                      alert(result['msg']);
-                  }
+                    // {# 토큰은 존재하지만 정원초과인 경우우 # }
+                } else {
+                    alert(result['msg']);
+                }
 
-              {# 토큰이 없는경우(유효기간 만료 or 로그인X) #}
-              } else {
-                  alert(validateToken['msg']);
-              }
+                // {# 토큰이 없는경우(유효기간 만료 or 로그인X) # }
+            } else {
+                alert(validateToken['msg']);
+            }
 
-              window.location.reload();
+            window.location.reload();
         }
 
         async function deletePost() {
-              const response = await fetch('/api/validate', {method: 'GET'});
-              const validateToken = await response.json();
+            const response = await fetch('/api/validate', { method: 'GET' });
+            const validateToken = await response.json();
 
-              {# 토큰이 존재할 경우 #}
-              if(validateToken['result'] === 'success') {
+            // {# 토큰이 존재할 경우 # }
+            if (validateToken['result'] === 'success') {
 
-                  const response = await fetch('/api/delete-post/{{ page.post_id }}', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({'give_user': validateToken['id'] })
-                  });
+                const response = await fetch('/api/delete-post/{{ page.post_id }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 'give_user': validateToken['id'] })
+                });
 
-                  const result = await response.json();
+                const result = await response.json();
 
-                  {# 토큰이 존재하고 삭제에 성공한 경우 #}
-                  if(result['result'] === 'success') {
-                      alert(result['msg']);
+                // {# 토큰이 존재하고 삭제에 성공한 경우 # }
+                if (result['result'] === 'success') {
+                    alert(result['msg']);
 
-                      {# 게시물 삭제 성공 시 메인 페이지로 이동#}
-                      {# 최종본에서 url 수정해야함           #}
-                      window.location.href = '/';
+                    // {# 게시물 삭제 성공 시 메인 페이지로 이동# }
+                    // {# 최종본에서 url 수정해야함           # }
+                    window.location.href = '/';
 
-                   {# 토큰이 존재하지만 글 작성자가 아닌경우 #}
-                  } else {
-                      alert(result['msg']);
-                  }
+                    // {# 토큰이 존재하지만 글 작성자가 아닌경우 # }
+                } else {
+                    alert(result['msg']);
+                }
 
-              {# 토큰이 없는경우(유효기간 만료 or 로그인X) #}
-              } else {
-                  alert(validateToken['msg']);
-              }
+                // {# 토큰이 없는경우(유효기간 만료 or 로그인X) # }
+            } else {
+                alert(validateToken['msg']);
+            }
 
-              window.location.reload();
+            window.location.reload();
         }
 
         async function deleteComment() {
-            const response = await fetch('/api/validate', {method: 'GET'});
+            const response = await fetch('/api/validate', { method: 'GET' });
             const validateToken = await response.json();
 
-            if(validateToken['result'] === 'success') {
+            if (validateToken['result'] === 'success') {
 
                 const response = await fetch('/api/delete-comment/{{ page.post_id }}', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({'give_user': validateToken['id'] })
-                  });
+                    body: JSON.stringify({ 'give_user': validateToken['id'] })
+                });
 
-                 const result = await response.json();
+                const result = await response.json();
 
-                 if(result['result'] === 'success') {
-                     alert(result['msg']);
+                if (result['result'] === 'success') {
+                    alert(result['msg']);
 
-                 } else {
-                     alert(result['msg']);
-                 }
+                } else {
+                    alert(result['msg']);
+                }
 
             } else {
                 alert(validateToken['msg']);
@@ -265,7 +264,7 @@
 </head>
 
 <body>
-     <div class="mytitle">
+    <div class="mytitle">
         <div class='mytitle-box'>
             <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img' />
             <h1>같이 먹자</h1>
@@ -281,7 +280,7 @@
 
             <div class="detail-info__date">
                 <div>
-                    <b>모임 일시 :</b> {{ page.date }} {{ page.time  }}
+                    <b>모임 일시 :</b> {{ page.date }} {{ page.time }}
                 </div>
                 <div>
                     <b>모집 장소 :</b> {{ page.meetingPlace }}
@@ -290,7 +289,7 @@
                     <b>모임장 :</b> {{ page.count[0] }}
                 </div>
             </div>
-         </div>
+        </div>
 
         <div class="img">
             <img src="{{ page.img }}" alt="{{ page.restaurant }}">
@@ -301,30 +300,33 @@
             <div>{{ page.message }}</div>
         </div>
 
-        {#
-            버튼 클릭시 메인 페이지로 이동
-            최종파일에서 라우터 수정해야함
-        #}
+        <!-- {#
+        버튼 클릭시 메인 페이지로 이동
+        최종파일에서 라우터 수정해야함
+        #} -->
         <div class="btn">
-            <button onclick="add()" type="button" class="btn btn-dark">참여하기({{ page.count | length }}/{{ page.maxCount }})</button>
+            <button onclick="add()" type="button" class="btn btn-dark">참여하기({{ page.count | length }}/{{ page.maxCount
+                }})</button>
             <button onclick="deletePost()" type="button" class="btn btn-dark">게시물 삭제</button>
             <button onclick="location.href='/'" type="button" class="btn btn-dark">돌아기기</button>
         </div>
 
         <div class="comment-list">
             {% for participant in page.count %}
-                <div class="comment">
-                    <div class="float">
-                        <b>{{ participant }}</b>님이 참여하셨습니다!
-                    </div>
-                    <div>
-                        <button onclick="deleteComment()" type="button" class="btn btn-outline-danger">취소</button>
-                    </div>
+            <div class="comment">
+                <div class="float">
+                    <b>{{ participant }}</b>님이 참여하셨습니다!
                 </div>
+                <div>
+                    <button onclick="deleteComment()" type="button" class="btn btn-outline-danger">취소</button>
+                </div>
+            </div>
             {% endfor %}
         </div>
 
     </div>
 
+
 </body>
+
 </html>

@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html lang="kr">
 
-=======
 <html padding:0; lang="kr">
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
+
 <head>
     <meta charset="UTF-8">
     <title>같이 먹자</title>
@@ -12,9 +9,7 @@
     <!--Jquery 임포트-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--구글 웹폰트 적용 1/2: JUA체 -->
-   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
 
 
     <!--CSS 적용 해설
@@ -26,64 +21,39 @@
     text-box는 입력 칸 아래 글자들
     button은 맨 아래 회원가입/취소하기 버튼-->
     <style>
-
-
-
-
-
-
         /*구글 웹폰트 적용 2/2: JUA체 */
-<<<<<<< HEAD
         * {
-            font-family: 'Jua', sans-serif;
-        }
-
-        img {
-            width: 200px;
-=======
-    * {
             font-family: "Gowun Dodum", sans-serif;
         }
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
 
         body {
             background-color: #F2EA9B;
             margin: 0;
         }
 
-<<<<<<< HEAD
-        .head {
-            width: 1440px;
-            height: 300px;
-            background-color: #F6EDE6;
-            padding: 50px 50px 50px 50px;
-            text-align: center;
-            font-size: 80px;
-=======
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
 
 
 
         .mytitle {
-                    width: 100%;
-                    height: 250px;
-                    vertical-align: top;
-                    background-color: #F3ECE4;
-                    background-image: linear-gradient(0deg,
-                            rgba(0, 0, 0, 0),
-                            rgba(0, 0, 0, 0)),
-                        url("");
-                    background-position: center;
-                    background-size: cover;
+            width: 100%;
+            height: 250px;
+            vertical-align: top;
+            background-color: #F3ECE4;
+            background-image: linear-gradient(0deg,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0)),
+                url("");
+            background-position: center;
+            background-size: cover;
 
-                    color: black;
+            color: black;
 
-                    text-align: center;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-                }
+        }
 
         .mytitle-img {
             width: 180px;
@@ -97,11 +67,8 @@
             align-items: center;
         }
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
         .body {
 
             background-color: #F2EA9B;
@@ -168,6 +135,7 @@
         }
     </style>
     <script>
+
         function register() {
             let pw_check = $('#pw_check').val();
             let id = $('#id').val();
@@ -194,72 +162,29 @@
             }
         }
 
-
-<<<<<<< HEAD
-        // #회원 중복확인 기능 아직 작동 안되서 주석처리 했습니다(동규)
-        // {#function double_check() {#}
-        // {#    $.ajax({#}
-        // {#        type: 'GET',#}
-        // {#        url: "/api/register",#}
-        // {#        data: {},#}
-        // {#        success: function(response) {#}
-        // {#            let rows = response['infos']#}
-        // {##}
-        // {#            for (i=0; i<rows.length; i++) {#}
-        // {#                let ids = rows[i]['id']#}
-        // {#                let id = $('#id');#}
-        // {#                let test = 0#}
-        // {#                if (id === ids) {#}
-        // {#                        test+=1#}
-        // {#                        alert('아이디가 겹칩니다')#}
-        // {#                        break#}
-        // {#                    }#}
-        // {##}
-        // {#                if (test===0){#}
-        // {##}
-        // {##}
-        // {#                    alert('사용 가능한 아이디 입니다')#}
-        // {#                }#}
-        // {#                let test = 0;#}
-        // {#            }#}
-        // {##}
-        // {##}
-        // {#        }#}
-        // {##}
-        // {##}
-        // {#    })#}
-        // {##}
-        // {##}
-        // {##}
-        // {##}
-        // {#}#}
-        // #여기까지
-=======
-
-
+        function double_check() {
+            let inputId = $('#id').val()
+            if (inputId != '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/register/double_check',
+                    data: { id_give: $('#id').val() },
+                    success: function (response) {
+                        alert(response['msg'])
+                    }
+                })
+            }
 
         }
-
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
-
-
-
     </script>
-
 </head>
 
 <body>
-<<<<<<< HEAD
-    <div class="head">
-        <img src="../static/egg-fried.jpg" />
-        같이 먹자
-=======
     <div class="mytitle">
         <div class='mytitle-box'>
-            <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img'mytitle-img />
+            <img src='/static/첫 페이지 상단 계란 후라이 그림.jpg' class='mytitle-img' mytitle-img />
             <h1>같이 먹자</h1>
         </div>
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
     </div>
     <div class="body">
         <div class="card">
@@ -273,27 +198,6 @@
             <div class="text-box">비밀번호를 다시 입력해 주세요</div>
             <div><button onclick="register()" class="button">회원가입</button> <button class="button">취소하기</button></div>
         </div>
-
-<<<<<<< HEAD
-=======
-
-    <div class="body">
-        <div class="card">
-            <div><input id="id" class="id-box" placeholder="아이디 입력">
-                <button onclick="double_check()" class="double-button">중복확인</button>
-            </div>
-            <div class="text-box">4자리 이상 영문 숫자 조합</div>
-            <input id="pw" type="password" class="input-box" placeholder="비밀번호 입력">
-            <div class="text-box">8자리 이상 영문 숫자 특수기호 조합</div>
-            <input id="pw_check" class="input-box" type="password" placeholder="비밀번호 다시 입력">
-            <div class="text-box">비밀번호를 다시 입력해 주세요</div>
-            <div>
-                <button onclick="register()" class="button">회원가입</button>
-                <button class="button">취소하기</button>
-            </div>
-        </div>
-
->>>>>>> 553ed3d3a2ed36d65aa146bd13a80efc4aac9227
     </div>
 </body>
 
