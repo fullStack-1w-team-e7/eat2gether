@@ -49,6 +49,15 @@
             justify-content: space-between;
         }
 
+        .detail-info__title a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .detail-info__title a:hover {
+            cursor: pointer;
+        }
+
         .detail-info__restaurant {
 
             font-size: 40px;
@@ -106,47 +115,107 @@
     </style>
 
     <script>
-        function add() {
+        {#
+            async 키워드로 add를 비동기 함수로 변환
+            fetch api로 '/api/validate' 호출
+            promise 객체 반환을 기다리기 위해 await
+        #}
 
+        async function add() {
+              const response = await fetch('/api/validate', {method: 'GET'});
+              const validateToken = await response.json();
 
+              {# 토큰이 존재할 경우 #}
+              if(validateToken['result'] === 'success') {
 
-            $.ajax({
-                type: 'POST',
-                url: '/api/add/{{ page.post_id }}/jisoo',
-                data: {},
-                success: function(response) {
-                    const result = response['result']
+                  const response = await fetch('/api/add/{{ page.post_id }}', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({'give_user': validateToken['id'] })
+                  });
 
-                    if(result === 'success') {
-                        alert(response['msg'])
-                    } else if(result === 'fail') {
-                        alert(response['msg'])
-                    }
+                  const result = await response.json();
 
-                    window.location.reload();
+                  {# 토큰이 존재하고 예약에 성공한 경우 #}
+                  if(result['result'] === 'success') {
+                      alert(result['msg']);
 
-                }
-            })
+                  {# 토큰은 존재하지만 정원초과인 경우우 #}
+                 } else {
+                      alert(result['msg']);
+                  }
+
+              {# 토큰이 없는경우(유효기간 만료 or 로그인X) #}
+              } else {
+                  alert(validateToken['msg']);
+              }
+
+              window.location.reload();
         }
 
-        function deletePost() {
+        async function deletePost() {
+              const response = await fetch('/api/validate', {method: 'GET'});
+              const validateToken = await response.json();
 
-            $.ajax({
-                type: 'POST',
-                url: '/api/delete-post/{{ page.post_id }}/jisoo',
-                data: {},
-                success: function(response) {
-                    const result = response['result']
+              {# 토큰이 존재할 경우 #}
+              if(validateToken['result'] === 'success') {
 
-                    if(result === 'success') {
-                        alert(response['msg']);
-                        window.location.href = '/'
-                    } else if(result === 'fail') {
-                        alert(response['msg']);
-                    }
+                  const response = await fetch('/api/delete-post/{{ page.post_id }}', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({'give_user': validateToken['id'] })
+                  });
 
-                }
-            })
+                  const result = await response.json();
+
+                  {# 토큰이 존재하고 삭제에 성공한 경우 #}
+                  if(result['result'] === 'success') {
+                      alert(result['msg']);
+
+                      {# 게시물 삭제 성공 시 메인 페이지로 이동#}
+                      {# 최종본에서 url 수정해야함           #}
+                      window.location.href = '/';
+
+                   {# 토큰이 존재하지만 글 작성자가 아닌경우 #}
+                  } else {
+                      alert(result['msg']);
+                  }
+
+              {# 토큰이 없는경우(유효기간 만료 or 로그인X) #}
+              } else {
+                  alert(validateToken['msg']);
+              }
+
+              window.location.reload();
+        }
+
+        async function deleteComment() {
+            const response = await fetch('/api/validate', {method: 'GET'});
+            const validateToken = await response.json();
+
+            if(validateToken['result'] === 'success') {
+
+                const response = await fetch('/api/delete-comment/{{ page.post_id }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({'give_user': validateToken['id'] })
+                  });
+
+                 const result = await response.json();
+
+                 if(result['result'] === 'success') {
+                     alert(result['msg']);
+
+                 } else {
+                     alert(result['msg']);
+                 }
+
+            } else {
+                alert(validateToken['msg']);
+            }
+
+            window.location.reload();
+
         }
 
     </script>
@@ -161,7 +230,9 @@
     <div class="detail-info">
 
         <div class="detail-info__title">
-            <div class="detail-info__restaurant">{{ page.restaurant }}</div>
+            <a href="{{ page.url }}" target="_blank">
+                <div class="detail-info__restaurant">{{ page.restaurant }}</div>
+            </a>
 
             <div class="detail-info__date">
                 <div>
@@ -199,6 +270,7 @@
             {% for participant in page.count %}
                 <div class="comment">
                     {{ participant }}님이 참여하셨습니다!
+                    <button onclick="deleteComment()" type="button" class="btn btn-outline-danger">취소</button>
                 </div>
             {% endfor %}
         </div>
