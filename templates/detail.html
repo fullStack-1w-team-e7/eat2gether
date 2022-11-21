@@ -281,11 +281,7 @@
             <div>식당주소 : {{ page.address }}</div>
             <div>{{ page.message }}</div>
         </div>
-
-        {#
-        버튼 클릭시 메인 페이지로 이동
-        최종파일에서 라우터 수정해야함
-        #}
+        
         <div class="btn">
             <button onclick="add()" type="button" class="btn btn-dark">참여하기({{ page.count | length }}/{{ page.maxCount
                 }})</button>
